@@ -90,6 +90,24 @@ public:
         size++;
     }
 
+    void addNode(Object* data) {
+        static_assert(has_equality_operator<Object>::value, "operator== is not defined for this type");
+        static_assert(has_inequality_operator<Object>::value, "operator!= is not defined for this type");   
+        List_Node<Object>* newNode = new List_Node<Object>(&data);
+
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            List_Node<Object>* currentNode = head;
+            while(currentNode->getNext() != NULL) {
+                currentNode = currentNode->getNext();
+            }
+            currentNode->setNext(newNode);
+        }
+
+        size++;
+    }
+
     template <typename T = Object, std::enable_if_t<has_ostream_operator<T>::value, int> = 0>
     void printList() {
         List_Node<Object>* currentNode = head;
