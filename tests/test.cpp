@@ -56,11 +56,14 @@ int main() {
 
     cout << "\n";
 
-    myList.deleteNode(student1);
+    //myList.deleteNode(student1);
 
-    myList.deleteNode(student3);
+    //myList.deleteNode(student3);
 
-    myList.printList();
+    //myList.printList();
+
+    students myStudent = myList.getObjAtIndex(0);
+    cout << myStudent << "\n";
 
     //std::cout << "\n";
 

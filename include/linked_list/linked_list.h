@@ -1,5 +1,6 @@
 #include <iostream>
 #include <type_traits>
+#include <cassert>
 
 
 // << OPERATOR
@@ -167,6 +168,20 @@ public:
             }
         }
 
+
+    }
+
+    Object getObjAtIndex(int index) {
+        assert(index < size);
+
+        int counter = 0;
+        List_Node<Object>* currentNode = head;
+        while(counter < index) {
+            currentNode = currentNode->getNext();
+            counter++;
+        }
+
+        return currentNode->getData();
 
     }
 
