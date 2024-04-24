@@ -14,20 +14,27 @@ public:
         name = n;
         age = a;
     }
-
+    
+    
     bool operator==(const students& otherStudent) const {
         return (name == otherStudent.name && age == otherStudent.age);
     }
+    
+    
 
     bool operator!=(const students& otherStudent) const {
         return (name != otherStudent.name || age != otherStudent.age);
     }
 
+    
     friend ostream& operator<< (ostream& os, const students& s)
     {
         os << s.name << ": " << s.age;
         return os;
     }
+    
+    
+    
 
 };
 

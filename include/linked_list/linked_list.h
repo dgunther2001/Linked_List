@@ -1,4 +1,31 @@
 #include <iostream>
+#include <type_traits>
+
+
+// << OPERATOR
+template <typename Object, typename = void>
+struct has_ostream_operator : std::false_type {};
+
+template <typename Object>
+struct has_ostream_operator<Object, std::void_t<decltype(std::declval<std::ostream&>() << std::declval<Object>())>> : std::true_type {};
+
+
+// == OPERATOR
+template <typename T, typename = void>
+struct has_equality_operator : std::false_type {};
+
+template <typename T>
+struct has_equality_operator<T, std::void_t<decltype(std::declval<T>() == std::declval<T>())>> : std::true_type {};
+
+
+// != OPERATOR
+template <typename T, typename = void>
+struct has_inequality_operator : std::false_type {};
+
+template <typename T>
+struct has_inequality_operator<T, std::void_t<decltype(std::declval<T>() != std::declval<T>())>> : std::true_type {};
+
+
 
 template <typename Object> 
 class List_Node {
@@ -45,6 +72,8 @@ public:
     }
 
     void addNode(Object data) {
+        static_assert(has_equality_operator<Object>::value, "operator== is not defined for this type");
+        static_assert(has_inequality_operator<Object>::value, "operator!= is not defined for this type");   
         List_Node<Object>* newNode = new List_Node<Object>(data);
 
         if (head == NULL) {
@@ -60,6 +89,7 @@ public:
         size++;
     }
 
+    template <typename T = Object, std::enable_if_t<has_ostream_operator<T>::value, int> = 0>
     void printList() {
         List_Node<Object>* currentNode = head;
         /*
@@ -79,6 +109,11 @@ public:
             currentNode = currentNode->getNext();
         }
     }
+    template <typename T = Object, std::enable_if_t<!has_ostream_operator<T>::value, int> = 0>
+    void printList() {
+        static_assert(has_ostream_operator<T>::value, "operator<< is not defined for this type");
+    }
+
 
     bool contains(Object inputData) {
         List_Node<Object>* currentNode = head;
@@ -94,6 +129,9 @@ public:
     }
 
     List_Node<Object>* deleteNode(Object nodeToDelete) {
+        static_assert(has_equality_operator<Object>::value, "operator== is not defined for this type");
+        static_assert(has_inequality_operator<Object>::value, "operator!= is not defined for this type");   
+
         if (contains(nodeToDelete) == false) {
             return NULL;
         } 
