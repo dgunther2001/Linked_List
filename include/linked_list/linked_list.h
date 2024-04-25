@@ -4,6 +4,7 @@
 
 
 // << OPERATOR
+namespace linked_list{
 template <typename Object, typename = void>
 struct has_ostream_operator : std::false_type {};
 
@@ -315,3 +316,5 @@ public:
 
     }
 };
+
+}
